@@ -6,6 +6,8 @@ const getPage = async index => {
   const res = await fetch(url);
   const text = await res.text();
   const [, teletext] = text.split(/<\/?pre>/);
+
+  if (!teletext) return ' Stránka nenalezena';
   return teletext.trim();
 };
 
@@ -40,19 +42,33 @@ const trimEnd = (str, splitStr) =>
     .replace(/^\s*$(?:\r\n?|\n)?/gm, '')
     .replace(/\r?\n?[^\r\n]*$/, '');
 
-(async () => {
+const isNumber = str => !isNaN(parseInt(str));
+
+const printHome = async () => {
   console.log(trimEnd(await getPage(110), 'obsah 2'));
   console.log(trimEnd(trimStart(await getPage(111), 'STRUČNĚ'), 'ze světa >> '));
   console.log();
 
   console.log(trimEnd(await getPage(130), 'obsah 2'));
   console.log(trimEnd(trimStart(await getPage(131), 'STRUČNĚ'), 'zajímavosti >> '));
+};
+
+(async () => {
+  await printHome();
 
   let answer = null;
   while (answer !== 'q') {
-    if (answer) console.log(await getPage(answer));
+    switch (answer) {
+      case 'h':
+        await printHome();
+        break;
+      default:
+        if (isNumber(answer)) {
+          console.log(await getPage(parseInt(answer)));
+        }
+    }
+
     answer = await askQuestion('Stránka: ');
-    console.log(answer);
   }
 
   rl.close();
