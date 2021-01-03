@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-console */
 const fetch = require('node-fetch');
 const readline = require('readline');
 
@@ -42,7 +44,7 @@ const trimEnd = (str, splitStr) =>
     .replace(/^\s*$(?:\r\n?|\n)?/gm, '')
     .replace(/\r?\n?[^\r\n]*$/, '');
 
-const isNumber = str => !isNaN(parseInt(str));
+const isNumber = str => !Number.isNaN(parseInt(str, 10));
 
 const printHome = async () => {
   console.log(trimEnd(await getPage(110), 'obsah 2'));
@@ -64,7 +66,7 @@ const printHome = async () => {
         break;
       default:
         if (isNumber(answer)) {
-          console.log(await getPage(parseInt(answer)));
+          console.log(await getPage(parseInt(answer, 10)));
         }
     }
 

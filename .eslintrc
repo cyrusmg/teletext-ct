@@ -1,3 +1,10 @@
 {
-  "extends": ["./node-js"]
+  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true,
+    "jasmine": true,
+    "es2017": true
+  }
 }
